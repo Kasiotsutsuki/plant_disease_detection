@@ -17,7 +17,7 @@ labels = {0: 'Healthy', 1: 'Powdery', 2: 'Rust'}
 
 
 def getResult(image_path):
-    img = load_img(image_path, target_size=(225,225))
+    img = load_img(image_path, target_size=(256, 256))
     x = img_to_array(img)
     x = x.astype('float32') / 255.
     x = np.expand_dims(x, axis=0)
