@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container d-flex justify-content-center">
+    <div class="result-card text-center">
+
+        <h3 class="section-title">🌿 Plant Doctor AI Diagnosis</h3>
+
+        <img src="{{ image_path }}" class="result-img">
+
+        <p id="ai-text"></p>
+
+        <a href="/" class="btn btn-outline-success mt-4">
+            Check Another Plant
+        </a>
+    </div>
+</div>
+
+<script>
+const text = `
+🧠 Plant Doctor AI Analysis Complete
+
+🌿 Diagnosis:
+{{ prediction }}
+
+📊 Confidence:
+{{ confidence }}%
+
+📖 What this means:
+{{ description }}
+
+🩺 Recommended Action:
+{{ cure }}
+
+💡 Tip:
+Early detection improves plant health and yield.
+`;
+
+let i = 0;
+function typeWriter() {
+    if (i < text.length) {
+        document.getElementById("ai-text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 18);
+    }
+}
+typeWriter();
+</script>
+
+{% endblock %}

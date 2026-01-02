@@ -1,29 +1,30 @@
-{% extends "import.html" %} 
+{% extends "base.html" %}
+
 {% block content %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="card upload-card text-center">
 
-<center>
-<br><h2>Plant Disease Classification Using Deep Learning</h2><br>
+        <h3 class="section-title">Analyze Your Plant</h3>
+        <p class="subtitle">Upload a leaf image and let AI diagnose it</p>
 
-    <form id="upload-file" method="post" enctype="multipart/form-data">
-         <input type="file" name="file" class="btn btn-success" id="imageUpload" accept=".png, .jpg, .jpeg">
-    </form>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" class="form-control mb-3"
+                   accept="image/*" onchange="previewImage(event)" required>
 
+            <img id="preview" class="preview-img">
 
-    <div class="image-section" style="display:none;">
-         <img id="imagePreview"  class="img-responsive" src="#" style="width:300px;height:300px;"/><br><br>
-         <div>
-            <button type="button" class="btn btn-info btn-lg " id="btn-predict">Predict!</button>
-         </div>
+            <button type="submit" class="btn btn-success mt-3 px-4">
+                Analyze Plant
+            </button>
+        </form>
     </div>
+</div>
 
-
-
-    <div class="loader" style="display:none;"></div>
-
-    <h3 id="result">
-        <span> </span>
-    </h3>
-
-
-</center><br><br>
+<script>
+function previewImage(event) {
+    const img = document.getElementById("preview");
+    img.src = URL.createObjectURL(event.target.files[0]);
+    img.style.display = "block";
+}
+</script>
 {% endblock %}

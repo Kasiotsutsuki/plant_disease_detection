@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plant Doctor AI</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Google Font (Cursive, premium look) -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/test.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar fixed-top">
+    <div class="container justify-content-center">
+        <span class="brand-title">
+            🌱 Plant Doctor AI
+        </span>
+    </div>
+</nav>
+
+<div class="page-offset">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
