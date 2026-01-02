@@ -1,35 +1,140 @@
-.loader {
-    border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    background: linear-gradient(to right, #eaf7ea, #ffffff);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    position: relative;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* ===================== NAVBAR ===================== */
+.navbar {
+    position: sticky;
+    top: 0;
+    height: 90px;
+    background: linear-gradient(90deg, #1b5e20, #4caf50);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.foot
-{
+.brand-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.6rem;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
 
-    background-color: #222222;
-    color:white;
-    margin-top:300px;
-    margin-bottom:0px;
-    padding-top:30px;
-    padding-bottom: 30px;
-    padding-left:0px;
-    text-align:center;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-right: 0px;
-
-    bottom: 0;
+/* ===================== CARDS ===================== */
+.upload-card,
+.result-card {
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    max-width: 620px;
     width: 100%;
-
-
+    margin: auto;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+    position: relative;
+    z-index: 5;
 }
-.
+
+/* ===== EMBEDDED 3D GREEN STRIP ===== */
+.result-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background: linear-gradient(
+        to bottom,
+        #1b5e20,
+        #4caf50,
+        #81c784
+    );
+    border-radius: 18px 0 0 18px;
+    box-shadow:
+        inset -2px 0 6px rgba(0,0,0,0.25),
+        2px 0 8px rgba(0,0,0,0.2);
+}
+
+/* ===================== TEXT ===================== */
+.section-title {
+    color: #2e7d32;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+#ai-text {
+    text-align: left;
+    line-height: 1.9;
+    font-size: 1rem;
+    margin-top: 20px;
+    white-space: pre-line;
+}
+
+/* ===================== IMAGES ===================== */
+.preview-img,
+.result-img {
+    width: 260px;
+    display: block;
+    margin: 20px auto 30px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* ===================== BUTTONS ===================== */
+.btn-success {
+    background-color: #2e7d32 !important;
+    border: none !important;
+}
+
+.btn-success:hover {
+    background-color: #1b5e20 !important;
+}
+
+/* ===================== DECORATIVE PLANTS ===================== */
+/* These are visible, illustrative, and intentional now */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    top: 100px;
+    width: 360px;
+    height: 100%;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.45;              /* MUCH more visible */
+    z-index: 2;                 /* BELOW cards, ABOVE background */
+}
+
+/* LEFT — MONSTERA (ILLUSTRATED) */
+body::before {
+    left: -40px;
+    background-image: url("https://i.imgur.com/YZ6X5Zc.png");
+    filter: drop-shadow(8px 0 12px rgba(0,0,0,0.15));
+}
+
+/* RIGHT — HOUSE PLANT */
+body::after {
+    right: -40px;
+    background-image: url("https://i.imgur.com/Q9LgQwK.png");
+    filter: drop-shadow(-8px 0 12px rgba(0,0,0,0.15));
+}
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 768px) {
+    body::before,
+    body::after {
+        display: none;
+    }
+
+    .brand-title {
+        font-size: 1.9rem;
+    }
+}

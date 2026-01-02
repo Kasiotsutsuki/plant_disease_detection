@@ -1,17 +1,21 @@
+/*
 $(document).ready(function () {
+
     // Init
     $('.image-section').hide();
     $('.loader').hide();
     $('#result').hide();
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#imagePreview').attr( 'src', e.target.result );
+                $('#imagePreview').attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);
         }
     }
+
     $("#imageUpload").change(function () {
         $('.image-section').show();
         $('#btn-predict').show();
@@ -19,6 +23,7 @@ $(document).ready(function () {
         $('#result').hide();
         readURL(this);
     });
+
     // Predict
     $('#btn-predict').click(function () {
         var form_data = new FormData($('#upload-file')[0]);
@@ -47,3 +52,4 @@ $(document).ready(function () {
     });
 
 });
+*/
