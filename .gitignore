@@ -20,3 +20,5 @@ venv/
 # OS junk
 .DS_Store
 Thumbs.db
+
+project imgs and videos/*.mp4
