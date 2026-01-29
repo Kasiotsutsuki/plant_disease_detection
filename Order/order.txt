@@ -1,0 +1,10 @@
+Healthy
+Powdery
+Rust
+EarlyBlight
+LateBlight
+BacterialSpot
+Leaf_Mold
+Septoria_Leaf_Spot
+Target_Spot
+Mosaic
