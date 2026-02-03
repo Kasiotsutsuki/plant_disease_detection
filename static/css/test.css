@@ -1,140 +1,266 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&family=Inter:wght@400;500;600&display=swap');
 
 body {
     background: linear-gradient(to right, #eaf7ea, #ffffff);
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
-    position: relative;
+    margin: 0;
 }
 
 /* ===================== NAVBAR ===================== */
+/* ===================== NAVBAR ===================== */
 .navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
+
     height: 90px;
     background: linear-gradient(90deg, #1b5e20, #4caf50);
     box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     z-index: 1000;
+
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
+/* HARD ALIGNMENT — NO DRIFT POSSIBLE */
+.nav-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* BRAND */
 .brand-title {
     font-family: 'Pacifico', cursive;
-    font-size: 2.6rem;
+    font-size: 2.4rem;
     color: #ffffff;
-    letter-spacing: 1px;
+    white-space: nowrap;
 }
 
-/* ===================== CARDS ===================== */
-.upload-card,
-.result-card {
-    background: white;
-    padding: 40px;
-    border-radius: 18px;
-    max-width: 620px;
-    width: 100%;
-    margin: auto;
-    box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+/* ===================== NAV LINKS ===================== */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+/* ===================== RIPPLE NAV ITEM ===================== */
+.nav-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+
     position: relative;
-    z-index: 5;
+    padding: 10px 24px;
+    border-radius: 999px;
+    overflow: hidden;
+
+    color: #ffffff;
+    text-decoration: none;
+    z-index: 1;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* ===== EMBEDDED 3D GREEN STRIP ===== */
-.result-card::before {
+/* ripple layer */
+.nav-item::before {
     content: "";
     position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 10px;
-    background: linear-gradient(
-        to bottom,
-        #1b5e20,
-        #4caf50,
-        #81c784
-    );
-    border-radius: 18px 0 0 18px;
-    box-shadow:
-        inset -2px 0 6px rgba(0,0,0,0.25),
-        2px 0 8px rgba(0,0,0,0.2);
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    top: var(--y);
+    left: var(--x);
+    transition: width 0.45s ease, height 0.45s ease;
+    z-index: -1;
 }
 
-/* ===================== TEXT ===================== */
-.section-title {
-    color: #2e7d32;
+.nav-item:hover::before {
+    width: 220%;
+    height: 220%;
+}
+
+.nav-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+/* LOGIN BUTTON */
+.nav-login {
+    background: rgba(245,255,248,0.95);
+    color: #1b5e20 !important;
     font-weight: 600;
-    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.45);
 }
 
-#ai-text {
-    text-align: left;
-    line-height: 1.9;
-    font-size: 1rem;
-    margin-top: 20px;
-    white-space: pre-line;
+.nav-login::before {
+    background: rgba(46,125,50,0.18);
 }
 
-/* ===================== IMAGES ===================== */
-.preview-img,
-.result-img {
-    width: 260px;
-    display: block;
-    margin: 20px auto 30px;
-    border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-/* ===================== BUTTONS ===================== */
-.btn-success {
-    background-color: #2e7d32 !important;
-    border: none !important;
-}
-
-.btn-success:hover {
-    background-color: #1b5e20 !important;
-}
-
-/* ===================== DECORATIVE PLANTS ===================== */
-/* These are visible, illustrative, and intentional now */
-
-body::before,
-body::after {
-    content: "";
-    position: fixed;
-    top: 100px;
-    width: 360px;
-    height: 100%;
-    pointer-events: none;
-    background-repeat: no-repeat;
-    background-size: contain;
-    opacity: 0.45;              /* MUCH more visible */
-    z-index: 2;                 /* BELOW cards, ABOVE background */
-}
-
-/* LEFT — MONSTERA (ILLUSTRATED) */
-body::before {
-    left: -40px;
-    background-image: url("https://i.imgur.com/YZ6X5Zc.png");
-    filter: drop-shadow(8px 0 12px rgba(0,0,0,0.15));
-}
-
-/* RIGHT — HOUSE PLANT */
-body::after {
-    right: -40px;
-    background-image: url("https://i.imgur.com/Q9LgQwK.png");
-    filter: drop-shadow(-8px 0 12px rgba(0,0,0,0.15));
-}
-
-/* ===================== MOBILE ===================== */
-@media (max-width: 768px) {
-    body::before,
-    body::after {
-        display: none;
-    }
-
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 900px) {
     .brand-title {
-        font-size: 1.9rem;
+        font-size: 2rem;
+    }
+
+    .nav-links {
+        gap: 14px;
+    }
+
+    .nav-item {
+        padding: 8px 18px;
+        font-size: 14px;
     }
 }
+
+/* ===== FORCE NAV TEXT COLOR (PREVENT BLUE LINKS) ===== */
+.nav-item,
+.nav-item:visited,
+.nav-item:hover,
+.nav-item:focus,
+.nav-item:active {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.nav-item:hover {
+    color: #f1fff4 !important; /* soft white-green */
+}
+
+
+/* ===== FIX LOGIN TEXT VISIBILITY ===== */
+.nav-login {
+    color: #1b5e20 !important;   /* force visible text */
+}
+
+.nav-login:hover {
+    color: #1b5e20 !important;
+}
+
+/* prevent ripple from covering login text */
+.nav-login::before {
+    background: rgba(46, 125, 50, 0.18);
+}
+
+/* ===== ACTIVE PAGE HIGHLIGHT ===== */
+.nav-item.active {
+    font-weight: 600;
+    color: #ffffff !important;
+}
+
+/* lock ripple for active item */
+.nav-item.active::before {
+    width: 220%;
+    height: 220%;
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* active item does not lift */
+.nav-item.active:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* login should NEVER look active */
+.nav-login.active::before {
+    width: 0;
+    height: 0;
+}
+
+/* ===== HAMBURGER ===== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 26px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 90px;
+        right: -100%;
+        width: 260px;
+        height: calc(100vh - 90px);
+        background: linear-gradient(180deg, #1b5e20, #4caf50);
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 18px;
+        transition: right 0.4s ease;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.25);
+    }
+
+    .nav-links.open {
+        right: 0;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    position: fixed;
+    top: 90px;
+    left: -280px;
+    width: 280px;
+    height: calc(100vh - 90px);
+    background: #ffffff;
+    box-shadow: 6px 0 20px rgba(0,0,0,0.15);
+    padding: 20px;
+    transition: left 0.4s ease;
+    z-index: 999;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar h5 {
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.history-item {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f1f8f1;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* toggle button */
+.sidebar-toggle {
+    position: fixed;
+    top: 110px;
+    left: 10px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1000;
+}
+

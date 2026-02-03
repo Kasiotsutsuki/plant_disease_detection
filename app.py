@@ -16,7 +16,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 model = load_model("model.h5")
 print("✅ Model loaded. Visit http://127.0.0.1:5000/")
 
-# ===================== CLASS NAMES (DO NOT CHANGE ORDER) =====================
+# ===================== CLASS NAMES (ORDER MUST MATCH TRAINING) =====================
 CLASS_NAMES = {
     0: "Bacterial Spot",
     1: "Black Rot",
@@ -40,67 +40,67 @@ CLASS_NAMES = {
 disease_info = {
     "Healthy": {
         "description": "The leaf shows no visible signs of disease and appears healthy.",
-        "cure": "No treatment required. Maintain proper irrigation, nutrition, and monitoring."
+        "cure": "No treatment required. Maintain proper irrigation, nutrition, and regular monitoring."
     },
     "Bacterial Spot": {
-        "description": "A bacterial disease causing dark, water-soaked spots on leaves.",
+        "description": "Dark, water-soaked spots caused by bacterial infection.",
         "cure": "Remove infected leaves and apply copper-based bactericides."
     },
     "Black Rot": {
-        "description": "A fungal disease that causes dark circular lesions and leaf decay.",
-        "cure": "Prune affected areas and apply appropriate fungicides."
+        "description": "Fungal disease causing black circular lesions and decay.",
+        "cure": "Prune affected parts and apply fungicides."
     },
     "Early Blight": {
-        "description": "Characterized by brown spots with concentric rings on older leaves.",
+        "description": "Brown spots with concentric rings, mostly on older leaves.",
         "cure": "Apply fungicides and practice crop rotation."
     },
     "Late Blight": {
-        "description": "A serious disease causing rapid leaf browning and decay.",
-        "cure": "Use certified seeds and apply systemic fungicides immediately."
+        "description": "Rapid leaf browning and decay under moist conditions.",
+        "cure": "Apply systemic fungicides and remove infected plants."
     },
     "Leaf Blight": {
-        "description": "Causes elongated brown lesions that lead to leaf drying.",
-        "cure": "Remove infected foliage and improve field drainage."
+        "description": "Elongated brown lesions that dry out leaves.",
+        "cure": "Improve drainage and remove infected foliage."
     },
     "Leaf Mold": {
-        "description": "Fungal infection producing yellow spots and mold growth under leaves.",
-        "cure": "Ensure good air circulation and apply fungicides."
+        "description": "Yellow patches with mold growth on leaf undersides.",
+        "cure": "Ensure airflow and apply fungicides."
     },
     "Leaf Scab": {
-        "description": "Produces scabby lesions and deformation on leaves.",
-        "cure": "Use resistant varieties and apply protective fungicides."
+        "description": "Scabby lesions causing deformation of leaves.",
+        "cure": "Use resistant varieties and protective fungicides."
     },
     "Leaf Scorch": {
-        "description": "Leaf edges dry out and turn brown due to stress or infection.",
-        "cure": "Maintain proper watering and remove infected leaves."
+        "description": "Dry brown edges due to stress or infection.",
+        "cure": "Maintain proper watering and remove damaged leaves."
     },
     "Northern Leaf Blight": {
-        "description": "Forms long grayish lesions on leaves, reducing photosynthesis.",
-        "cure": "Apply fungicides and practice crop rotation."
+        "description": "Long gray-green lesions reducing photosynthesis.",
+        "cure": "Apply fungicides and rotate crops."
     },
     "Powdery Mildew": {
-        "description": "A fungal disease forming white powdery patches on leaves.",
+        "description": "White powdery fungal growth on leaf surface.",
         "cure": "Apply sulfur-based fungicides and reduce humidity."
     },
     "Rust": {
-        "description": "Produces reddish-brown pustules on leaf surfaces.",
-        "cure": "Remove infected leaves and apply appropriate fungicides."
+        "description": "Reddish-brown pustules on leaf surfaces.",
+        "cure": "Remove infected leaves and apply fungicides."
     },
     "Septoria Leaf Spot": {
-        "description": "Small dark spots with light centers appear on leaves.",
-        "cure": "Remove affected leaves and apply fungicides."
+        "description": "Small dark spots with light centers.",
+        "cure": "Remove infected leaves and apply fungicides."
     },
     "Target Spot": {
-        "description": "Circular lesions with concentric rings appear on leaves.",
-        "cure": "Use fungicides and avoid overhead irrigation."
+        "description": "Circular target-like lesions on leaves.",
+        "cure": "Avoid overhead irrigation and apply fungicides."
     },
     "Mosaic Virus": {
-        "description": "Viral disease causing mottled leaf coloration and distortion.",
+        "description": "Mottled leaf coloration caused by viral infection.",
         "cure": "Remove infected plants and control insect vectors."
     },
     "Esca Black Measles": {
-        "description": "Causes dark streaks and spots leading to vine decline.",
-        "cure": "Prune infected vines and apply disease management practices."
+        "description": "Dark streaks and spots leading to vine decline.",
+        "cure": "Prune infected vines and apply management practices."
     }
 }
 
@@ -116,21 +116,42 @@ def predict():
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     file.save(filepath)
 
+    # Image preprocessing
     img = load_img(filepath, target_size=(224, 224))
     x = img_to_array(img) / 255.0
     x = np.expand_dims(x, axis=0)
 
+    # Model prediction
     preds = model.predict(x)[0]
-    idx = int(np.argmax(preds))
-    confidence = round(float(preds[idx]) * 100, 2)
 
-    label = CLASS_NAMES[idx]
-    info = disease_info[label]
+    # Sort predictions (Top-1 & Top-2)
+    sorted_indices = np.argsort(preds)[::-1]
+    top1_idx = sorted_indices[0]
+    top2_idx = sorted_indices[1]
+
+    top1_label = CLASS_NAMES[top1_idx]
+    top2_label = CLASS_NAMES[top2_idx]
+
+    top1_conf = round(float(preds[top1_idx]) * 100, 2)
+    top2_conf = round(float(preds[top2_idx]) * 100, 2)
+
+    # Confidence explanation
+    if top1_conf >= 75:
+        confidence_msg = "High confidence prediction."
+    elif top1_conf >= 50:
+        confidence_msg = "Moderate confidence. A clearer image may improve accuracy."
+    else:
+        confidence_msg = "Low confidence. Diseases may look similar or image quality may be low."
+
+    info = disease_info[top1_label]
 
     return render_template(
         "result.html",
-        prediction=label,
-        confidence=confidence,
+        prediction=top1_label,
+        confidence=top1_conf,
+        alt_prediction=top2_label,
+        alt_confidence=top2_conf,
+        confidence_msg=confidence_msg,
         description=info["description"],
         cure=info["cure"],
         image_path="/uploads/" + filename
@@ -143,3 +164,11 @@ def uploaded_file(filename):
 # ===================== RUN =====================
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def register():
+    return render_template("register.html")

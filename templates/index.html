@@ -1,22 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center">
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card upload-card text-center">
 
-        <h3 class="section-title">Analyze Your Plant</h3>
-        <p class="subtitle">Upload a leaf image and let AI diagnose it</p>
+        <!-- Title -->
+        <h3 class="section-title mb-2">Analyze Your Plant</h3>
+        <p class="subtitle mb-4">
+            Upload a clear leaf image and let AI diagnose the disease
+        </p>
 
+        <!-- Upload Form -->
         <form action="/predict" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" class="form-control mb-3"
-                   accept="image/*" onchange="previewImage(event)" required>
 
-            <img id="preview" class="preview-img">
+            <!-- File Input -->
+            <input
+                type="file"
+                name="file"
+                class="form-control mb-3"
+                accept="image/*"
+                onchange="previewImage(event)"
+                required
+            >
 
-            <button type="submit" class="btn btn-success mt-3 px-4">
+            <!-- Image Preview -->
+            <img
+                id="preview"
+                class="preview-img"
+                alt="Leaf Preview"
+            >
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success mt-4 px-5 py-2">
                 Analyze Plant
             </button>
+
         </form>
+
+        <!-- Helper Text -->
+        <small class="text-muted d-block mt-3">
+            Supported formats: JPG, PNG • Best results with clear leaf images
+        </small>
+
     </div>
 </div>
 

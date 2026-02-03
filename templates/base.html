@@ -7,8 +7,8 @@
     <!-- Bootstrap -->
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 
-    <!-- Google Font (Cursive, premium look) -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{{ url_for('static', filename='css/test.css') }}" rel="stylesheet">
@@ -16,17 +16,63 @@
 
 <body>
 
+<!-- ===================== NAVBAR ===================== -->
 <nav class="navbar fixed-top">
-    <div class="container justify-content-center">
-        <span class="brand-title">
+    <div class="nav-container">
+
+        <!-- Brand -->
+        <div class="brand-title">
             🌱 Plant Doctor AI
-        </span>
+        </div>
+        <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+
+       <div class="nav-links">
+    <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">Home</a>
+    <a href="/learn" class="nav-item {% if request.path == '/learn' %}active{% endif %}">Learn</a>
+    <a href="/about" class="nav-item {% if request.path == '/about' %}active{% endif %}">About</a>
+    <a href="/login" class="nav-item nav-login {% if request.path == '/login' %}active{% endif %}">Login</a>
+</div>
+
+
     </div>
 </nav>
+
+<div class="sidebar" id="sidebar">
+    <h5>🧠 Scan History</h5>
+    <div class="history-item">Bacterial Spot</div>
+    <div class="history-item">Leaf Blight</div>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
 
 <div class="page-offset">
     {% block content %}{% endblock %}
 </div>
+
+<!-- Ripple animation JS -->
+<script src="{{ url_for('static', filename='js/nav-hover.js') }}"></script>
+
+<script>
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+});
+</script>
+
+<script>
+document.getElementById("sidebarToggle").onclick = () => {
+    document.getElementById("sidebar").classList.toggle("open");
+};
+</script>
+
 
 </body>
 </html>
